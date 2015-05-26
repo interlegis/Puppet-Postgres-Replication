@@ -13,7 +13,7 @@ class postgresreplication (
   #validate_integer($port)
   validate_bool(is_ip_address($master_IP_address))
   validate_bool(is_ip_address($slave_IP_address))
-  
+  ##postgresql.conf
   postgresql::server::config_entry { 'wal_level':
     value => 'hot_standby',
   }
@@ -31,10 +31,11 @@ class postgresreplication (
   }
 
   ## SLAVE CONFIGURATION
-  if $slave == true {
+  ##if $slave == true {
+  if $::ipaddress == $slave_IP_address {
     class { 'postgresql::server':
-      ipv4acls       => ["host replication $user $master_IP_address/32 md5"],
-      listen_addresses => "localhost,$slave_IP_address",
+      ipv4acls       => ["host replication $user $master_IP_address/32 md5"],                    ##pg_hba.conf
+      listen_addresses => "localhost,$slave_IP_address",                                         ##postgresql.conf
       manage_recovery_conf => true,
     }
     file { '/etc/postgresql/this.is.master':
@@ -50,8 +51,8 @@ class postgresreplication (
   ## MASTER CONFIGURATION
   else {
     class { 'postgresql::server':
-      ipv4acls        => ["host replication $user $slave_IP_address/32 md5"],
-      listen_addresses  => "localhost,$master_IP_address",
+      ipv4acls        => ["host replication $user $slave_IP_address/32 md5"],                    ##pg_hba.conf
+      listen_addresses  => "localhost,$master_IP_address",                                       ##postgresql.conf
       manage_recovery_conf => true,
     }
     file { '/etc/postgresql/this.is.master':
