@@ -9,7 +9,7 @@ class postgresreplication (
   $trigger_file         = undef,
 )
 {
-  validate_bool($slave)
+  #validate_bool($slave)
   #validate_integer($port)
   validate_bool(is_ip_address($master_IP_address))
   validate_bool(is_ip_address($slave_IP_address))
