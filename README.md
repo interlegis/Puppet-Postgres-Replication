@@ -29,4 +29,6 @@ Finally, on Master, replicate the initial database
 
 Start postgresql service on Slave and everything must be up and running. 
 
-*Adapted from: https://www.digitalocean.com/community/tutorials/how-to-set-up-master-slave-replication-on-postgresql-on-an-ubuntu-12-04-vps*
+======
+
+Adapted from: https://www.digitalocean.com/community/tutorials/how-to-set-up-master-slave-replication-on-postgresql-on-an-ubuntu-12-04-vps
