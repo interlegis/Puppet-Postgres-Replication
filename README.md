@@ -14,6 +14,33 @@ This module works by sending every logged modification on the Master to the Slav
 /var/lib/postgresql/9.3/main/recovery.conf
 ```
 
+## Setup
+
+```
+class { 'postgresreplication' :
+  $user                = 'rep',
+  $password,
+  $master_IP_address,
+  $slave_IP_address,
+  $port                = 5432,
+  $trigger_file        = undef,
+}
+```
+##### `$user`
+Replication user that will run on both servers. This user can only be used for replication.
+##### `$password`
+Replication user password.
+##### `$master_IP_address`
+IP address of Master.
+##### `$slave_IP_address`
+IP address of Slave. 
+##### `$port`
+Port used for the replication.
+##### `$trigger_file`
+If this file is present on the Slave, it will act as a Master.
+
+
+
 ##Usage
 
 Run puppet on both Master and Slave.
