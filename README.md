@@ -17,14 +17,16 @@ Allow both servers to communicate with each other by exchanging ssh keys.
 # ssh-copy-id IP_address_of_the_opposite_server
 ```
 
-Then, on slave
+Then, on Slave
 ```$ sudo service postgresql stop```
 
-Finally, on master, replicate the initial database
+Finally, on Master, replicate the initial database
 ```
 # psql -c "select pg_start_backup('initial_backup');"
 # rsync -cva --inplace --exclude=*pg_xlog* /var/lib/postgresql/9.1/main/ slave_IP_address:/var/lib/postgresql/9.1/main/
 # psql -c "select pg_stop_backup();"
 ```
+
+Start postgresql service on Slave and everything must be up and running. 
 
 *Adapted from: https://www.digitalocean.com/community/tutorials/how-to-set-up-master-slave-replication-on-postgresql-on-an-ubuntu-12-04-vps*
