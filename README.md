@@ -4,6 +4,16 @@ Uses Puppetlabs-Postgresql module https://github.com/puppetlabs/puppetlabs-postg
 
 *This module is ready to be used with The Foreman tool http://theforeman.org/*
 
+##Overview
+
+This module works by sending every logged modification on the Master to the Slave, replicating the database immediately. The files modified by the module are:
+
+```
+/etc/postgresql/9.3/main/pg_hba.conf
+/etc/postgresql/9.3/main/postgresql.conf
+/var/lib/postgresql/9.3/main/recovery.conf
+```
+
 ##Usage
 
 Run puppet on both Master and Slave.
@@ -23,7 +33,7 @@ Then, on Slave
 Finally, on Master, replicate the initial database
 ```
 # psql -c "select pg_start_backup('initial_backup');"
-# rsync -cva --inplace --exclude=*pg_xlog* /var/lib/postgresql/9.1/main/ slave_IP_address:/var/lib/postgresql/9.1/main/
+# rsync -cva --inplace --exclude=*pg_xlog* /var/lib/postgresql/9.3/main/ slave_IP_address:/var/lib/postgresql/9.3/main/
 # psql -c "select pg_stop_backup();"
 ```
 
