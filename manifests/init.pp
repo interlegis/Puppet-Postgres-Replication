@@ -13,6 +13,17 @@ class postgresreplication (
   #validate_integer($port)
   validate_bool(is_ip_address($master_IP_address))
   validate_bool(is_ip_address($slave_IP_address))
+
+  # Increase sysctl maximum File Descriptors
+  sysctl { 'fs.file-max': value => '65536' }
+  # Increase maximum File Descriptors in /etc/security/limits.conf
+  limits::fragment {
+    "*/soft/nofile":
+      value => "65535";
+    "*/hard/nofile":
+      value => "65535";
+  }
+
   if $::ipaddress == $slave_IP_address {
     class { 'postgresql::server':
       ipv4acls       => ["host replication $user $master_IP_address/32 md5"],
