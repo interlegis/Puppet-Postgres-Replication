@@ -4,6 +4,11 @@ Uses Puppetlabs-Postgresql module https://github.com/puppetlabs/puppetlabs-postg
 
 *This module is ready to be used with The Foreman tool http://theforeman.org/*
 
+##Requirements
+
+puppetlabs-Postgresql: https://github.com/puppetlabs/puppetlabs-postgresql
+puppetlabs-stdlib:     https://github.com/puppetlabs/puppetlabs-stdlib
+
 ##Overview
 
 This module works by sending every logged modification on the Master to the Slave, replicating the database immediately. The files modified by the module are:
