@@ -1,16 +1,14 @@
 #init.pp
 class postgresreplication (
-#  $slave                = false,
   $user                 = 'rep',
   $master_IP_address,
   $slave_IP_address,
   $port                 = 5432,
   $password,
   $trigger_file         = undef,
+  $extra_acls           = [],
 )
 {
-  #validate_bool($slave)
-  #validate_integer($port)
   validate_bool(is_ip_address($master_IP_address))
   validate_bool(is_ip_address($slave_IP_address))
 
@@ -25,9 +23,10 @@ class postgresreplication (
   }
 
   if $::ipaddress == $slave_IP_address {
+    $default_slave_acl = ["host replication $user $master_IP_address/32 md5"]
     class { 'postgresql::server':
-      ipv4acls       => ["host replication $user $master_IP_address/32 md5"],
-      listen_addresses => "localhost,$slave_IP_address",
+      ipv4acls             => concat($default_slave_acl, $extra_acls),
+      listen_addresses     => "localhost,$slave_IP_address",
       manage_recovery_conf => true,
     }
     postgresql::server::recovery { 'postgresrecovery':
@@ -55,9 +54,10 @@ class postgresreplication (
     }
   }
   else {
+    $default_master_acl = ["host replication $user $slave_IP_address/32 md5"]
     class { 'postgresql::server':
-      ipv4acls        => ["host replication $user $slave_IP_address/32 md5"],
-      listen_addresses  => "localhost,$master_IP_address",
+      ipv4acls         => concat($default_master_acl, $extra_acls),
+      listen_addresses => "localhost,$master_IP_address",
     }
     file { '/var/lib/postgresql/9.3/main/recovery.conf':
       ensure => 'absent',
