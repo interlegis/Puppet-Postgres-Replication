@@ -49,8 +49,8 @@ class postgresreplication (
     postgresql::server::config_entry { 'hot_standby':
       value => 'on',
     }
-    postgresql::server::config_entry { 'max_wal_segments':
-      value => '1000',
+    postgresql::server::config_entry { 'hot_standby_feedback':
+      value => 'on',
     }
   }
   else {
