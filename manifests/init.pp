@@ -7,10 +7,14 @@ class postgresreplication (
   $password,
   $trigger_file         = undef,
   $extra_acls           = [],
+  $pg_hba_conf_defaults = true,
+  $pg_hba_custom        = {},
 )
 {
   validate_bool(is_ip_address($master_IP_address))
   validate_bool(is_ip_address($slave_IP_address))
+  validate_bool($pg_hba_conf_defaults)
+  validate_hash($pg_hba_custom)
 
   # Increase sysctl maximum File Descriptors
   sysctl { 'fs.file-max': value => '65536' }
@@ -28,6 +32,7 @@ class postgresreplication (
       ipv4acls             => concat($default_slave_acl, $extra_acls),
       listen_addresses     => "localhost,$slave_IP_address",
       manage_recovery_conf => true,
+      pg_hba_conf_defaults => $pg_hba_conf_defaults,
     }
     postgresql::server::recovery { 'postgresrecovery':
       standby_mode => 'on',
@@ -58,6 +63,7 @@ class postgresreplication (
     class { 'postgresql::server':
       ipv4acls         => concat($default_master_acl, $extra_acls),
       listen_addresses => "localhost,$master_IP_address",
+      pg_hba_conf_defaults => $pg_hba_conf_defaults,
     }
     file { '/var/lib/postgresql/9.3/main/recovery.conf':
       ensure => 'absent',
@@ -82,5 +88,8 @@ class postgresreplication (
     postgresql::server::config_entry { 'hot_standby':
       value => 'on',
     }
+  }
+  if $pg_hba_conf_defaults == 'false' {
+    create_resources ('postgresql::server::pg_hba_rule',$pg_hba_custom)
   }
 }
