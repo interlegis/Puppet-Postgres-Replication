@@ -7,8 +7,8 @@ class postgresreplication (
   $password,
   $trigger_file         = undef,
   $extra_acls           = [],
-  $pg_hba_conf_defaults = true,
   $pg_hba_custom        = {},
+  $pg_hba_conf_defaults = true,
 )
 {
   validate_bool(is_ip_address($master_IP_address))
@@ -57,6 +57,9 @@ class postgresreplication (
     postgresql::server::config_entry { 'hot_standby_feedback':
       value => 'on',
     }
+    postgresql::server::config_entry { 'max_connections':
+      value => '1000',
+    }
   }
   else {
     $default_master_acl = ["host replication $user $slave_IP_address/32 md5"]
@@ -88,8 +91,12 @@ class postgresreplication (
     postgresql::server::config_entry { 'hot_standby':
       value => 'on',
     }
+    postgresql::server::config_entry { 'max_connections':
+      value => '1000',
+    }
   }
   if $pg_hba_conf_defaults == 'false' {
+    notify{'pg hba conf':}
     create_resources ('postgresql::server::pg_hba_rule',$pg_hba_custom)
   }
 }
