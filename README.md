@@ -6,8 +6,9 @@ Uses Puppetlabs-Postgresql module https://github.com/puppetlabs/puppetlabs-postg
 
 ##Requirements
 
-puppetlabs-Postgresql: https://github.com/puppetlabs/puppetlabs-postgresql
-puppetlabs-stdlib:     https://github.com/puppetlabs/puppetlabs-stdlib
+* puppetlabs-Postgresql: https://github.com/puppetlabs/puppetlabs-postgresql
+* puppetlabs-stdlib:     https://github.com/puppetlabs/puppetlabs-stdlib
+* puppetlabs-limits:     https://github.com/puppetlabs/puppetlabs-limits
 
 ##Overview
 
