@@ -1,15 +1,15 @@
-#Puppet Module to manage Master and Slave servers using Postgresql.
+# Puppet Module to manage Master and Slave servers using Postgresql.
 
 Uses Puppetlabs-Postgresql module https://github.com/puppetlabs/puppetlabs-postgresql/
 
 *This module is ready to be used with The Foreman tool http://theforeman.org/*
 
-##Requirements
+## Requirements
 
 puppetlabs-Postgresql: https://github.com/puppetlabs/puppetlabs-postgresql
 puppetlabs-stdlib:     https://github.com/puppetlabs/puppetlabs-stdlib
 
-##Overview
+## Overview
 
 This module works by sending every logged modification on the Master to the Slave, replicating the database immediately. The files modified by the module are:
 
@@ -46,7 +46,7 @@ If this file is present on the Slave, it will act as a Master.
 
 
 
-##Usage
+## Usage
 
 Run puppet on both Master and Slave.
 
